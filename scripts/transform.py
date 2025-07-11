@@ -1,30 +1,22 @@
 import pandas as pd
 import os
 
-def transform_to_star_schema_with_score() -> str:
-    """
-    Transforme les données météo en :
-    - table de faits météo avec score calculé
-    - dimension ville
-
-    Returns:
-        str: Chemin vers la table de faits météo
-    """
-    # 1. Chemins
+def transform_to_star_schema() -> str:
+    # 1. Path
     input_file = "./data/processed/meteo_global.csv"
     output_dir = "./data/star_schema"
     os.makedirs(output_dir, exist_ok=True)
 
-    # 2. Chargement
+    # 2. Load data
     meteo_df = pd.read_csv(input_file)
 
-    # 3. Nettoyage de colonnes (on garde l’essentiel)
+    # 3. clean columns, keep only essentials
     meteo_df = meteo_df[[
         "datetime", "temp", "humidity", "wind_speed", "rain_prob",
         "description", "city_name", "city_country", "date_extraction"
     ]]
 
-    # 4. Création dimension ville (clé primaire : ville_id)
+    # 4. create city dimension (primary key: city_id)
     dim_ville_path = f"{output_dir}/dim_ville.csv"
 
     if os.path.exists(dim_ville_path):
@@ -45,21 +37,21 @@ def transform_to_star_schema_with_score() -> str:
         dim_ville = pd.concat([dim_ville, new_rows], ignore_index=True)
         dim_ville.to_csv(dim_ville_path, index=False)
 
-    # 5. Jointure des villes (clé étrangère dans la table de faits)
+    # 5. join cities (foreign key in fact table)
     facts_df = meteo_df.merge(dim_ville, on=["city_name", "city_country"], how="left")
 
 
-    # 7. Construction de la table de faits
+    # 7. Create fact table
     facts_df = facts_df[[
         "datetime", "temp", "humidity", "wind_speed", "rain_prob",
         "description", "ville_id", "date_extraction"
     ]]
 
-    # 8. Sauvegarde
+    # 8. Save
     fact_path = f"{output_dir}/fact_weather.csv"
     facts_df.to_csv(fact_path, index=False)
 
-    print("✅ Schéma en étoile généré avec score météo.")
+    print("✅ Generate star schema ")
     return fact_path
 
 #transform_to_star_schema_with_score()
