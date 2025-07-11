@@ -7,11 +7,11 @@ load_dotenv()
 
 API_KEY = os.getenv("OPENWEATHER_API_KEY")
 BASE_URL = "https://api.openweathermap.org/data/2.5/forecast"
-RAW_DATA_DIR = "../data/raw"
+RAW_DATA_DIR = "./data/raw"
 os.makedirs(RAW_DATA_DIR, exist_ok=True)
 
-def get_weather_forecast(city_name):
-    url = f"{BASE_URL}?q={city_name}&appid={API_KEY}&cnt=9&units=metric"
+def get_weather_forecast(city_name, api_key):
+    url = f"{BASE_URL}?q={city_name}&appid={api_key}&cnt=9&units=metric"
     response = requests.get(url)
 
     if response.status_code == 200:
@@ -52,8 +52,7 @@ def get_weather_forecast(city_name):
     else:
         print(f"❌ Error for {city_name} : {response.status_code}")
 
-CITIES = ["Paris","Madrid","Tokyo","London","New York"]
+#CITIES = ["Paris","Toulouse","Marseille","Nice","Lyon"]
 
-for city in CITIES:
-    get_weather_forecast(city)
-
+#for city in CITIES:
+#    get_weather_forecast(city)
