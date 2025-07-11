@@ -6,7 +6,7 @@ from airflow.providers.standard.operators.python import PythonOperator
 from datetime import datetime
 from scripts.extract import get_weather_forecast
 from scripts.merge import merge_all_csv
-from scripts.transform import transform_to_star_schema_with_score
+from scripts.transform import transform_to_star_schema
 from airflow import DAG
 from airflow.models import Variable
 
@@ -43,6 +43,6 @@ with DAG(
     )
     transform_task = PythonOperator(
         task_id='transform_to_star_schema',
-        python_callable=transform_to_star_schema_with_score,
+        python_callable=transform_to_star_schema,
     )
     extract_task >> merge_task >> transform_task
