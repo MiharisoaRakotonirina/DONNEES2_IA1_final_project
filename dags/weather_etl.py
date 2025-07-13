@@ -7,6 +7,7 @@ from datetime import datetime
 from scripts.extract import get_weather_forecast
 from scripts.merge import merge_all_csv
 from scripts.transform import transform_to_star_schema
+from scripts.clean_weather_fact import clean_weather_fact
 from airflow import DAG
 from airflow.models import Variable
 
@@ -25,7 +26,7 @@ with DAG(
     default_args=default_args,
     description='ETL pipeline for weather data',
     schedule='0 12 * * *',  # Execute every day at 12 PM
-    catchup=True,
+    catchup=False,
     max_active_runs=1
 ) as dag :
     extract_task = [
@@ -45,4 +46,8 @@ with DAG(
         task_id='transform_to_star_schema',
         python_callable=transform_to_star_schema,
     )
-    extract_task >> merge_task >> transform_task
+    clean_fact_task = PythonOperator(
+        task_id='clean_weather_fact',
+        python_callable=clean_weather_fact,
+    )
+    extract_task >> merge_task >> transform_task >> clean_fact_task
