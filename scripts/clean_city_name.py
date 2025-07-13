@@ -5,8 +5,9 @@ def clean_city_name():
     df = pd.read_csv(path)
 
     df["city_name"] = df["city_name"].str.replace("Arrondissement de ", "", regex=False).str.strip()
-
     df["city_name"] = df["city_name"].str.title()
+
+    df = df.drop_duplicates(subset=["city_name", "city_country"])
 
     df.to_csv(path, index=False)
     print("✅ City names cleaned and saved to ", path)
