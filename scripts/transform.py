@@ -10,6 +10,9 @@ def transform_to_star_schema() -> str:
     # 2. Load data
     meteo_df = pd.read_csv(input_file)
 
+    meteo_df["city_name"] = meteo_df["city_name"].str.replace("Arrondissement de ", "", regex=False).str.strip()
+    meteo_df["city_name"] = meteo_df["city_name"].str.title()
+
     # 3. clean columns, keep only essentials
     meteo_df = meteo_df[[
         "datetime", "temp", "humidity", "wind_speed", "rain_prob",
