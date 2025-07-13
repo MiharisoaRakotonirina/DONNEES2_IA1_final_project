@@ -19,6 +19,7 @@ def get_weather_forecast(city_name, api_key):
         records = []
 
         city_name_full = data['city']['name'] # City Name (ex : Paris)
+        city_name_full = city_name_full.replace("Arrondissement de ", "").strip().title()
         city_country = data['city']['country'] # City Country Code(ex: FR)
 
         for item in data['list']:
