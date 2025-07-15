@@ -33,4 +33,4 @@ def clean_weather_fact():
     return output_path
 
 
-clean_weather_fact()
+#clean_weather_fact()
