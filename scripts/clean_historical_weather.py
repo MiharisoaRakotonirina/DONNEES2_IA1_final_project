@@ -32,7 +32,9 @@ def clean_historical_weather():
     df["rain_prob"] = df["rain_prob"].fillna(0).astype(float).round(1)
     df["temp"] = df["temp"].astype(float).round(2)
     df["humidity"] = df["humidity"].astype(float).round(1)
-    df["wind_speed"] = df["wind_speed"].astype(float).round(2)
+    df["wind_speed"] = df["wind_speed"].astype(float) * 0.27778
+    df["wind_speed"] = df["wind_speed"].round(2)
+
 
     # Add new column (date_extraction)
     df["date_extraction"] = pd.to_datetime(df["forecast_date"]) - timedelta(days=1)
