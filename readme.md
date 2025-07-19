@@ -61,7 +61,12 @@ airflow scheduler
 You're now ready to run the pipeline and visualize the DAGs!
 
 
-To get a cleaner historical weather forecast data, run **clean_historical_weather.py** one time : 
+### To get a cleaner historical weather forecast data, run **clean_historical_weather.py** one time : 
 ```bash
 python clean_historical_weather.py
+```
+
+## You can checkout the dashboard via the following link :
+```bash
+https://lookerstudio.google.com/reporting/2999df75-f2ae-4c8b-9b9b-b0c3981844d0
 ```
